@@ -52,7 +52,7 @@ namespace TooManyPlayers.Patches
 				bool alreadyPatched = false;
 				for (int i = 0; i < codes.Count; i++)
 				{
-					if (codes[i].opcode == OpCodes.Call && codes[i].operand == getMaxPlayersMethod)
+					if (codes[i].opcode == OpCodes.Call && codes[i].operand is MethodInfo method && method == getMaxPlayersMethod)
 					{
 						alreadyPatched = true;
 						break;
