@@ -17,7 +17,7 @@ Adjustment values live in `UserData/MelonPreferences.cfg`.
 
 Key options in the `TooManyPlayers` section:
 
-- `MaxPlayers`: maximum number of players allowed in a session (default: `999`, minimum: `4`, maximum: `999`).
+- `MaxPlayers`: maximum number of players allowed in a session (default: `8`, minimum: `4`, maximum: `32766`).
 
 The mod ensures that all player count checks throughout the game respect this configured limit,
 including server socket limits, room entry checks, Steam lobby creation, and session management.

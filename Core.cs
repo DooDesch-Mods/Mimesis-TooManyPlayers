@@ -20,9 +20,9 @@ namespace TooManyPlayers
 			{
 				MelonLogger.Warning($"Max players is set to {maxPlayers}, which is below the default of 4. This may cause issues.");
 			}
-			else if (maxPlayers > 999)
+			else if (maxPlayers > 8)
 			{
-				MelonLogger.Warning($"Max players is set to {maxPlayers}, which exceeds the recommended maximum of 999.");
+				MelonLogger.Warning($"Max players is set to {maxPlayers}, which exceeds the recommended maximum of 8.");
 			}
 		}
 	}
