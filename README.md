@@ -15,7 +15,7 @@ beyond the default limit of 4 players. Configure your preferred maximum and play
 ## Configuration
 Adjustment values live in `UserData/MelonPreferences.cfg`.
 
-Key options in the `TooManyPlayers` section:
+Key options in the `TooManyPlayers` category:
 
 - `MaxPlayers`: maximum number of players allowed in a session (default: `8`, minimum: `4`, maximum: `32766`).
 
