@@ -1,0 +1,74 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<RootNamespace>MorePlayers</RootNamespace>
+		<LangVersion>latest</LangVersion>
+		<IsPackable>false</IsPackable>
+		<Version>1.0.0</Version>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<FileVersion>1.0.0.0</FileVersion>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<AssemblyName>MorePlayers</AssemblyName>
+		<WorkspaceLibPath Condition="'$(WorkspaceLibPath)' == ''">$(MSBuildThisFileDirectory)../Workspace/lib</WorkspaceLibPath>
+		<GameManagedPath Condition="'$(GameManagedPath)' == ''">$(MSBuildThisFileDirectory)../Workspace/lib/game</GameManagedPath>
+		<MelonLoaderPath Condition="'$(MelonLoaderPath)' == ''">$(MSBuildThisFileDirectory)../Workspace/lib/melonloader</MelonLoaderPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Reference Include="Assembly-CSharp">
+			<HintPath>$(GameManagedPath)/Assembly-CSharp.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.CoreModule">
+			<HintPath>$(GameManagedPath)/UnityEngine.CoreModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine">
+			<HintPath>$(GameManagedPath)/UnityEngine.dll</HintPath>
+		</Reference>
+		<Reference Include="MelonLoader">
+			<HintPath>$(MelonLoaderPath)/MelonLoader.dll</HintPath>
+		</Reference>
+		<Reference Include="0Harmony">
+			<HintPath>$(MelonLoaderPath)/0Harmony.dll</HintPath>
+		</Reference>
+		<Reference Include="com.rlabrecque.steamworks.net">
+			<HintPath>$(GameManagedPath)/com.rlabrecque.steamworks.net.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<PropertyGroup>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+		<NoWarn>MSB3245</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="Core.cs" />
+		<Compile Include="Config\MorePlayersPreferences.cs" />
+		<Compile Include="Patches\ServerSocketPatches.cs" />
+		<Compile Include="Patches\IVroomPatches.cs" />
+		<Compile Include="Patches\VRoomManagerPatches.cs" />
+		<Compile Include="Patches\GameSessionInfoPatches.cs" />
+		<Compile Include="Patches\SteamInviteDispatcherPatches.cs" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="$(MimicAPIPath)/MimicAPI.csproj">
+			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+			<Private>false</Private>
+		</ProjectReference>
+	</ItemGroup>
+	
+	<PropertyGroup>
+		<ModsDirectory>F:\Launcher\SteamLibrary\steamapps\common\MIMESIS\Mods</ModsDirectory>
+		<GameExePath>F:\Launcher\SteamLibrary\steamapps\common\MIMESIS\MIMESIS.exe</GameExePath>
+		<MimicAPIPath Condition="'$(MimicAPIPath)' == ''">$(MSBuildThisFileDirectory)../Workspace/MimicAPI</MimicAPIPath>
+	</PropertyGroup>
+
+	<Target Name="PostBuild" AfterTargets="Build" Condition="'$(OS)' == 'Windows_NT'">
+		<Exec Condition="Exists('$(ModsDirectory)')" Command="cmd /c copy /Y &quot;$(TargetPath)&quot; &quot;$(ModsDirectory)&quot;" ContinueOnError="true" />
+		<Exec Condition="Exists('$(ModsDirectory)') And Exists('$(MimicAPIPath)\bin\$(Configuration)\netstandard2.1\MimicAPI.dll')" Command="cmd /c copy /Y &quot;$(MimicAPIPath)\bin\$(Configuration)\netstandard2.1\MimicAPI.dll&quot; &quot;$(ModsDirectory)&quot;" ContinueOnError="true" />
+	</Target>
+</Project>
+
