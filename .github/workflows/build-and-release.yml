@@ -193,17 +193,17 @@ jobs:
           unzip -q "TooManyPlayers_${{ needs.build.outputs.version }}.zip" -d thunderstore-package/
           
 
-      - name: Upload to Thunderstore
-        uses: GreenTF/upload-thunderstore-package@v4.3
-        with:
-          token: ${{ secrets.THUNDERSTORE_TOKEN }}
-          community: mimesis
-          namespace: DooDesch
-          name: TooManyPlayers
-          description: Increases the maximum player count beyond the default limit of 4 players. Configure your preferred maximum and play with larger groups.
-          version: ${{ needs.build.outputs.version }}
-          repo: mimesis.thunderstore.io
-          path: thunderstore-package
-          categories: |
-            Mods
+      # - name: Upload to Thunderstore
+      #   uses: GreenTF/upload-thunderstore-package@v4.3
+      #   with:
+      #     token: ${{ secrets.THUNDERSTORE_TOKEN }}
+      #     community: mimesis
+      #     namespace: DooDesch
+      #     name: TooManyPlayers
+      #     description: Increases the maximum player count beyond the default limit of 4 players. Configure your preferred maximum and play with larger groups.
+      #     version: ${{ needs.build.outputs.version }}
+      #     repo: mimesis.thunderstore.io
+      #     path: thunderstore-package
+      #     categories: |
+      #       Mods
 
