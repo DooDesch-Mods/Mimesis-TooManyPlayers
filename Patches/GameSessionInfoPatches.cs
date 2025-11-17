@@ -27,12 +27,7 @@ namespace TooManyPlayers.Patches
 		[HarmonyPatch(typeof(GameSessionInfo), "AddPlayerSteamID")]
 		internal static class AddPlayerSteamIDPatch
 		{
-			private static void Prefix(ulong steamID, bool isHost, out int __state)
-			{
-				__state = 0;
-			}
-
-			private static void Postfix(GameSessionInfo __instance, ulong steamID, bool isHost, bool __result, int __state)
+			private static void Postfix(GameSessionInfo __instance, ulong steamID, bool isHost, bool __result)
 			{
 				if (!__result)
 				{
@@ -50,6 +45,21 @@ namespace TooManyPlayers.Patches
 					BindingFlags.NonPublic | BindingFlags.Static);
 				
 				if (getMaxPlayersMethod == null)
+				{
+					return codes;
+				}
+				
+				bool alreadyPatched = false;
+				for (int i = 0; i < codes.Count; i++)
+				{
+					if (codes[i].opcode == OpCodes.Call && codes[i].operand == getMaxPlayersMethod)
+					{
+						alreadyPatched = true;
+						break;
+					}
+				}
+				
+				if (alreadyPatched)
 				{
 					return codes;
 				}
