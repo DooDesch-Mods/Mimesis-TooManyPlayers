@@ -5,9 +5,6 @@ using Steamworks;
 
 namespace TooManyPlayers.Patches
 {
-	/// <summary>
-	/// Patches for SteamInviteDispatcher to create lobbies with increased player capacity.
-	/// </summary>
 	internal static class SteamInviteDispatcherPatches
 	{
 		[HarmonyPatch(typeof(SteamInviteDispatcher), "CreateLobby")]
@@ -17,16 +14,13 @@ namespace TooManyPlayers.Patches
 			{
 				try
 				{
-					// Create lobby with our max players instead of hardcoded 4
-					// Use public lobby type like the original, but with our max players
 					SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypePublic, TooManyPlayersPreferences.MaxPlayers);
 					UnityEngine.PlayerPrefs.SetInt("TempLobbyIsOpen", isOpenForRandomMatch ? 1 : 0);
-					return false; // Skip original method
+					return false;
 				}
-				catch (System.Exception ex)
+				catch (System.Exception)
 				{
-					MelonLogger.Error($"Error in CreateLobby patch: {ex.Message}");
-					return true; // Fall back to original method
+					return true;
 				}
 			}
 		}

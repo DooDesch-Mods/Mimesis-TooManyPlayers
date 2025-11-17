@@ -5,10 +5,6 @@ using System.Reflection.Emit;
 
 namespace TooManyPlayers.Patches
 {
-	/// <summary>
-	/// Patches for IVroom to override player count limits in room entry checks.
-	/// Uses transpiler to replace hardcoded 4 with configured max players.
-	/// </summary>
 	internal static class IVroomPatches
 	{
 		[HarmonyPatch(typeof(IVroom), "CanEnterChannel")]
@@ -19,14 +15,49 @@ namespace TooManyPlayers.Patches
 			{
 				var codes = new System.Collections.Generic.List<CodeInstruction>(instructions);
 				
-				// Find and replace the hardcoded 4 with our max players value
+				int maxPlayers = 8;
+				try
+				{
+					maxPlayers = TooManyPlayersPreferences.MaxPlayers;
+				}
+				catch (System.NullReferenceException)
+				{
+				}
+				
 				for (int i = 0; i < codes.Count; i++)
 				{
-					// Look for Ldc_I4_4 (load constant int 4)
 					if (codes[i].opcode == OpCodes.Ldc_I4_4)
 					{
-						// Replace with our max players
-						codes[i] = new CodeInstruction(OpCodes.Ldc_I4, TooManyPlayersPreferences.MaxPlayers);
+						codes[i] = new CodeInstruction(OpCodes.Ldc_I4, maxPlayers);
+					}
+				}
+				
+				return codes;
+			}
+		}
+
+		[HarmonyPatch(typeof(IVroom), "ProcessEnterWaitQueue")]
+		internal static class ProcessEnterWaitQueuePatch
+		{
+			private static System.Collections.Generic.IEnumerable<CodeInstruction> Transpiler(
+				System.Collections.Generic.IEnumerable<CodeInstruction> instructions)
+			{
+				var codes = new System.Collections.Generic.List<CodeInstruction>(instructions);
+				
+				int maxPlayers = 8;
+				try
+				{
+					maxPlayers = TooManyPlayersPreferences.MaxPlayers;
+				}
+				catch (System.NullReferenceException)
+				{
+				}
+				
+				for (int i = 0; i < codes.Count; i++)
+				{
+					if (codes[i].opcode == OpCodes.Ldc_I4_4)
+					{
+						codes[i] = new CodeInstruction(OpCodes.Ldc_I4, maxPlayers);
 					}
 				}
 				
