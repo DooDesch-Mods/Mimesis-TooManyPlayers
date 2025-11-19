@@ -1,6 +1,11 @@
-# TooManyPlayers Mod
+# MIMESIS - TooManyPlayers
 
 Increases the maximum player count beyond the default limit of 4 players. Configure your preferred maximum and play with larger groups.
+
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Game](https://img.shields.io/badge/game-MIMESIS-purple)
+![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.1+-green)
+![Status](https://img.shields.io/badge/status-working-brightgreen)
 
 ## Features
 
