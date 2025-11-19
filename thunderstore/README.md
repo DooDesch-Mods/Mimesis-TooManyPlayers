@@ -29,3 +29,4 @@ The mod uses Harmony patches to intercept and modify player count limits at mult
 - **SteamInviteDispatcher**: Creates Steam lobbies with increased capacity
 
 
+
