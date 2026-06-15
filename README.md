@@ -1,120 +1,76 @@
 # MIMESIS - TooManyPlayers
 
-A MelonLoader mod that increases the maximum player count in Mimesis beyond the default limit of 4 players. Configure your preferred maximum and play with larger groups.
+> Raise the hard 4-player session cap so you can host and play Mimesis with larger groups - you pick the maximum, the mod enforces it everywhere.
 
 ![Version](https://img.shields.io/badge/version-1.1.0-blue)
 ![Game](https://img.shields.io/badge/game-MIMESIS-purple)
 ![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.3+-green)
 ![Status](https://img.shields.io/badge/status-working-brightgreen)
 
----
+Mimesis ships with a hard limit of 4 players per session. TooManyPlayers rewrites every player-count check in the game - the network socket, room entry, session tracking, and the Steam lobby - to honor a maximum you configure, so you can run bigger lobbies.
 
-## Table of Contents
+## Features
 
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [How It Works](#how-it-works)
-- [Development](#development)
-- [License](#license)
-
----
+- Raises the player cap from the default 4 to any value you configure (`MaxPlayers`, default 8).
+- One central override does the heavy lifting: a postfix on the `DataConsts` constructor rewrites `Bifrost.ConstEnum.DataConsts.C_MaxPlayerCount`, the single data-driven field every in-game limit check reads (waiting/maintenance rooms, `IVroom.CanEnterChannel`, `GameSessionInfo.AddPlayerSteamID`). Lifting that one field raises the cap everywhere at once.
+- Network layer: prefixes on `FishySteamworks.Server.ServerSocket` `GetMaximumClients` / `SetMaximumClients` force the transport's client limit to your value (clamped to 32766), and a constructor postfix re-applies it whenever a socket is created.
+- Steam lobby capacity: a transpiler on `SteamInviteDispatcher.CreateLobby` replaces the hardcoded lobby member cap of 4 with your configured maximum. (Steam still enforces its own ~250 hard limit at runtime.)
+- Diagnostics: logs the old and new `C_MaxPlayerCount` values on startup, and warns if a player fails to be added to a session.
+- Your configured value is validated and clamped to the 4-32766 range on load, with a warning logged if you set it out of bounds.
 
 ## Requirements
 
 | Component | Version |
-|-----------|---------|
-| **Mimesis** | Latest Steam build |
-| **MelonLoader** | 0.7.3 or higher |
-
----
+|---|---|
+| MIMESIS | 0.3.0 (current Steam build) |
+| MelonLoader | 0.7.3+ |
 
 ## Installation
 
-1. Download the latest `TooManyPlayers.dll` release from the [releases page](../../releases)
-2. Place the file into your Mimesis mods directory:
-   ```
-   Mimesis/MelonLoader/Mods/TooManyPlayers.dll
-   ```
-3. Launch the game once to generate the configuration file
-
-> **Note:** The configuration file will be created automatically on first launch at `UserData/MelonPreferences.cfg`
-
----
+- Recommended: install via a Thunderstore mod manager (r2modman / Gale) and let it resolve dependencies. Package: `DooDesch/TooManyPlayers`.
+- Manual: download `TooManyPlayers.dll` from the [releases page](../../releases) and drop it into `MIMESIS/Mods/`. Launch the game once to generate the config file at `UserData/MelonPreferences.cfg`.
 
 ## Configuration
 
-Configuration values are stored in `UserData/MelonPreferences.cfg` under the `TooManyPlayers` category.
+Stored in `UserData/MelonPreferences.cfg` under the `[TooManyPlayers]` category.
 
-### Available Options
+| Option | Description | Default | Values/Range |
+|---|---|---|---|
+| `MaxPlayers` | Maximum number of players allowed in a session (display name "Maximum Players"). Values below 4 or above 32766 are clamped on load, with a warning logged. | `8` | `4` - `32766` (clamped) |
 
-| Option | Description | Default | Range |
-|--------|-------------|---------|-------|
-| `MaxPlayers` | Maximum number of players allowed in a session | `8` | `4` - `32766` |
+## Usage
 
-### What Gets Modified
+There are no keybinds and no in-game UI beyond the standard MelonPreferences config.
 
-The mod ensures that all player count checks throughout the game respect your configured limit:
+1. Install the mod and launch the game once to generate `UserData/MelonPreferences.cfg`.
+2. Set `MaxPlayers` under the `[TooManyPlayers]` category to your desired cap.
+3. Relaunch the game.
 
-- Server socket limits
-- Room entry validation
-- Steam lobby creation
-- Session management
-- Waiting room capacity
-- Maintenance room capacity
+Host-side requirement: the cap is enforced by the host/server, so the player hosting the lobby or session must have the mod installed and configured for the larger group to take effect. Joining players do not strictly need it for the cap to apply, but matching configs avoid surprises.
 
----
+## Compatibility
 
-## How It Works
+Built for Mimesis 0.3.0 / MelonLoader 0.7.3. Because the limit is enforced server-side, the host carries the configured cap for the whole lobby.
 
-TooManyPlayers uses Harmony patches to intercept and modify player count limits at multiple critical points in the game's codebase.
+## Building (developers)
 
-### Patch Overview
-
-| Component | Method(s) | Purpose |
-|-----------|-----------|---------|
-| **ServerSocket** | `GetMaximumClients()`, `SetMaximumClients()` | Overrides network layer client limits |
-| **IVroom** | `CanEnterChannel()` | Allows more players into rooms |
-| **VRoomManager** | `EnterWaitingRoom()`, `EnterMaintenenceRoom()` | Updates room manager capacity checks |
-| **GameSessionInfo** | `AddPlayerSteamID()` | Modifies session player tracking |
-| **SteamInviteDispatcher** | Steam lobby creation | Creates Steam lobbies with increased capacity |
-
-### Technical Details
-
-All patches use **transpilers** or **prefix/postfix** methods to ensure:
-- Compatibility with game updates
-- Stability and reliability
-- Minimal performance impact
-
----
-
-## Development
-
-### Project Structure
+Standalone mod, no MimicAPI dependency.
 
 ```
-MorePlayers/
-├── Core.cs                          # Main entry point
-├── Config/
-│   └── TooManyPlayersPreferences.cs # Configuration management
-└── Patches/
-    ├── ServerSocketPatches.cs       # Network layer limits
-    ├── IVroomPatches.cs             # Room entry validation
-    ├── VRoomManagerPatches.cs       # Room manager checks
-    ├── GameSessionInfoPatches.cs    # Session player tracking
-    └── SteamInviteDispatcherPatches.cs # Steam lobby creation
+dotnet build -c Release
 ```
 
-### Key Files
+Targets `netstandard2.1` and references the game DLLs in `Workspace/lib/game` plus MelonLoader/Harmony in `Workspace/lib/melonloader`. The post-build step copies `TooManyPlayers.dll` into your local `MIMESIS/Mods` folder.
 
-- **`Core.cs`** - Core entry point and mod initialization
-- **`Config/TooManyPlayersPreferences.cs`** - Preference management and configuration
-- **`Patches/*.cs`** - Harmony patches for each modified component
+Patch overview (all under `Patches/`):
 
----
+| File | Target | Role |
+|---|---|---|
+| `DataConstsPatches.cs` | `DataConsts` constructor | Central override of `C_MaxPlayerCount` - raises the cap everywhere |
+| `ServerSocketPatches.cs` | `ServerSocket` `GetMaximumClients` / `SetMaximumClients` / ctor | Forces the network client limit to your value (clamped 32766) |
+| `SteamInviteDispatcherPatches.cs` | `SteamInviteDispatcher.CreateLobby` | Transpiler replacing the hardcoded lobby cap of 4 |
+| `GameSessionInfoPatches.cs` | `GameSessionInfo.AddPlayerSteamID` | Diagnostic postfix only (warns on failed adds) |
 
-## License
+## Credits / License
 
-This project is provided as-is under the **MIT License**. Contributions are welcome via pull requests.
-
----
+Author: DooDesch. Provided as-is under the MIT License. Contributions are welcome via pull requests at [Mimesis-TooManyPlayers](https://github.com/DooDesch/Mimesis-TooManyPlayers).
