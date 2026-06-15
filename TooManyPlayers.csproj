@@ -6,9 +6,9 @@
 		<RootNamespace>TooManyPlayers</RootNamespace>
 		<LangVersion>latest</LangVersion>
 		<IsPackable>false</IsPackable>
-		<Version>1.0.0</Version>
-		<AssemblyVersion>1.0.0.0</AssemblyVersion>
-		<FileVersion>1.0.0.0</FileVersion>
+		<Version>1.1.0</Version>
+		<AssemblyVersion>1.1.0.0</AssemblyVersion>
+		<FileVersion>1.1.0.0</FileVersion>
 		<NeutralLanguage>en-US</NeutralLanguage>
 		<AssemblyName>TooManyPlayers</AssemblyName>
 		<WorkspaceLibPath Condition="'$(WorkspaceLibPath)' == ''">$(MSBuildThisFileDirectory)../Workspace/lib</WorkspaceLibPath>
@@ -47,8 +47,7 @@
 		<Compile Include="Core.cs" />
 		<Compile Include="Config\TooManyPlayersPreferences.cs" />
 		<Compile Include="Patches\ServerSocketPatches.cs" />
-		<Compile Include="Patches\IVroomPatches.cs" />
-		<Compile Include="Patches\VRoomManagerPatches.cs" />
+		<Compile Include="Patches\DataConstsPatches.cs" />
 		<Compile Include="Patches\GameSessionInfoPatches.cs" />
 		<Compile Include="Patches\SteamInviteDispatcherPatches.cs" />
 	</ItemGroup>
