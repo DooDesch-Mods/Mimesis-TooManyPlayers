@@ -2,9 +2,9 @@
 
 A MelonLoader mod that increases the maximum player count in Mimesis beyond the default limit of 4 players. Configure your preferred maximum and play with larger groups.
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-1.1.0-blue)
 ![Game](https://img.shields.io/badge/game-MIMESIS-purple)
-![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.1+-green)
+![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.3+-green)
 ![Status](https://img.shields.io/badge/status-working-brightgreen)
 
 ---
@@ -25,7 +25,7 @@ A MelonLoader mod that increases the maximum player count in Mimesis beyond the 
 | Component | Version |
 |-----------|---------|
 | **Mimesis** | Latest Steam build |
-| **MelonLoader** | 0.7.1 or higher |
+| **MelonLoader** | 0.7.3 or higher |
 
 ---
 
