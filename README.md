@@ -1,5 +1,8 @@
 # MIMESIS - TooManyPlayers
 
+> 🛟 **Need help or found a bug?** Get support at [support.doodesch.de](https://support.doodesch.de).
+
+
 > Raise the hard 4-player session cap so you can host and play Mimesis with larger groups - you pick the maximum, the mod enforces it everywhere.
 
 ![Version](https://img.shields.io/badge/version-1.1.0-blue)
