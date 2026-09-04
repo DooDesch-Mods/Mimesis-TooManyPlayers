@@ -1,6 +1,6 @@
 {
   "name": "TooManyPlayers",
-  "version_number": "1.1.0",
+  "version_number": "0.0.0",
   "website_url": "https://github.com/DooDesch/Mimesis-TooManyPlayers",
   "description": "Increases the maximum player count beyond the default limit of 4 players. Configure your preferred maximum and play with larger groups.",
   "dependencies": [

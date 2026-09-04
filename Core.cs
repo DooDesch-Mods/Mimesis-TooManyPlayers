@@ -1,7 +1,7 @@
 using TooManyPlayers.Config;
 using MelonLoader;
 
-[assembly: MelonInfo(typeof(TooManyPlayers.Core), "TooManyPlayers", "1.1.0", "DooDesch", null)]
+[assembly: MelonInfo(typeof(TooManyPlayers.Core), "TooManyPlayers", DooDesch.ModVersion.Current, "DooDesch", null)]
 [assembly: MelonGame("ReLUGames", "MIMESIS")]
 
 namespace TooManyPlayers
