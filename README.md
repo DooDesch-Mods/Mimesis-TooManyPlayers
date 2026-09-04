@@ -77,3 +77,7 @@ Patch overview (all under `Patches/`):
 ## Credits / License
 
 Author: DooDesch. Provided as-is under the MIT License. Contributions are welcome via pull requests at [Mimesis-TooManyPlayers](https://github.com/DooDesch/Mimesis-TooManyPlayers).
+
+## AI disclosure
+
+The mod icon is AI-generated. Code and configuration are hand-written.

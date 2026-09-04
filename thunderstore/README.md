@@ -58,3 +58,7 @@ Built for Mimesis 0.3.0 / MelonLoader 0.7.3.
 ## Links
 
 Source and releases: [github.com/DooDesch/Mimesis-TooManyPlayers](https://github.com/DooDesch/Mimesis-TooManyPlayers)
+
+## AI disclosure
+
+The mod icon is AI-generated. Code and configuration are hand-written.
