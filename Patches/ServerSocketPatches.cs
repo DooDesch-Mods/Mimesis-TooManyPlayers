@@ -43,10 +43,17 @@ namespace TooManyPlayers.Patches
 							System.Reflection.BindingFlags.NonPublic | 
 							System.Reflection.BindingFlags.Public);
 					
-					setMethod?.Invoke(__instance, new object[] { TooManyPlayersPreferences.MaxPlayers });
+					if (setMethod == null)
+					{
+						MelonLogger.Error("[TooManyPlayers] ServerSocket.SetMaximumClients not found - the cap stays at the vanilla value.");
+						return;
+					}
+
+					setMethod.Invoke(__instance, new object[] { TooManyPlayersPreferences.MaxPlayers });
 				}
-				catch (System.Exception)
+				catch (System.Exception ex)
 				{
+					MelonLogger.Error($"[TooManyPlayers] Failed to raise the client cap on the server socket: {ex.Message}");
 				}
 			}
 		}

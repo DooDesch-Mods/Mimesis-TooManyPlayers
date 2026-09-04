@@ -27,8 +27,12 @@ namespace TooManyPlayers.Patches
 				{
 					maxPlayers = TooManyPlayersPreferences.MaxPlayers;
 				}
-				catch (System.NullReferenceException)
+				catch (System.NullReferenceException ex)
 				{
+					// A transpiler can run before the preferences exist. The lobby then keeps the
+					// vanilla size, and that has to be visible - it looks exactly like a mod that
+					// never ran.
+					MelonLogger.Warning($"[TooManyPlayers] Preferences not ready, the lobby keeps {maxPlayers} seats: {ex.Message}");
 				}
 
 				bool patched = false;
