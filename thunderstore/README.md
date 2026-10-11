@@ -5,7 +5,7 @@
 
 > Raise the hard 4-player session cap so you can host and play Mimesis with larger groups - you pick the maximum, the mod enforces it everywhere.
 
-![Version](https://img.shields.io/badge/version-1.1.2-blue)
+![Version](https://img.shields.io/badge/version-1.1.3-blue)
 ![Game](https://img.shields.io/badge/game-MIMESIS-purple)
 ![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.3+-green)
 ![Status](https://img.shields.io/badge/status-working-brightgreen)
@@ -18,7 +18,7 @@ Mimesis ships with a hard limit of 4 players per session. TooManyPlayers rewrite
 - One central override raises the cap everywhere at once by rewriting the single data-driven field every in-game limit check reads (waiting/maintenance rooms, room entry, session tracking).
 - Forces the network transport's client limit to your value (up to 250) and re-applies it whenever a socket is created.
 - Raises the Steam lobby member cap from 4 to your configured maximum.
-- Logs the old and new cap values on startup and warns if a player fails to be added to a session.
+- Logs Steam lobby requests, creation result codes, the 30-second timeout, player-cap changes and failed session additions in `MelonLoader/Latest.log`.
 - Your configured value is validated and clamped to the 4-250 range on load.
 
 ## Requirements
@@ -36,6 +36,8 @@ Mimesis ships with a hard limit of 4 players per session. TooManyPlayers rewrite
 ## Configuration
 
 Stored in `UserData/MelonPreferences.cfg` under the `[TooManyPlayers]` category.
+
+The host's `MaxPlayers` applies automatically to joining clients with this mod. Settings are fixed for the lobby; changes apply to the next lobby. Your local config is kept. A host without TooManyPlayers uses the vanilla limit of 4.
 
 | Option | Description | Default | Values/Range |
 |---|---|---|---|

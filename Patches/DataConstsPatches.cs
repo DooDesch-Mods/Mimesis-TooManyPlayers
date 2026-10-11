@@ -23,32 +23,41 @@ namespace TooManyPlayers.Patches
 	{
 		private static readonly FieldInfo MaxPlayerCountField =
 			typeof(DataConsts).GetField("C_MaxPlayerCount", BindingFlags.Instance | BindingFlags.Public);
+		private static DataConsts _currentConsts;
+
+		internal static void ApplyEffectiveValues()
+		{
+			if (_currentConsts != null) Apply(_currentConsts);
+		}
+
+		private static void Apply(DataConsts consts)
+		{
+			try
+			{
+				if (MaxPlayerCountField == null)
+				{
+					MelonLogger.Error("[TooManyPlayers] DataConsts.C_MaxPlayerCount field not found - cannot set player cap.");
+					return;
+				}
+				int maxPlayers = TooManyPlayersPreferences.MaxPlayers;
+				int original = (int)MaxPlayerCountField.GetValue(consts);
+				if (original == maxPlayers) return;
+				MaxPlayerCountField.SetValue(consts, maxPlayers);
+				MelonLogger.Msg($"[TooManyPlayers] Set C_MaxPlayerCount from {original} to {maxPlayers}.");
+			}
+			catch (System.Exception ex)
+			{
+				MelonLogger.Error($"[TooManyPlayers] Failed to set C_MaxPlayerCount: {ex}");
+			}
+		}
 
 		[HarmonyPatch(typeof(DataConsts), MethodType.Constructor, typeof(Const_MasterDataHolder))]
 		internal static class ConstructorPatch
 		{
 			private static void Postfix(DataConsts __instance)
 			{
-				try
-				{
-					if (MaxPlayerCountField == null)
-					{
-						MelonLogger.Error("[TooManyPlayers] DataConsts.C_MaxPlayerCount field not found - cannot raise player cap.");
-						return;
-					}
-
-					int maxPlayers = TooManyPlayersPreferences.MaxPlayers;
-					int original = (int)MaxPlayerCountField.GetValue(__instance);
-
-					// readonly field, but reflection can still write it after the ctor ran.
-					MaxPlayerCountField.SetValue(__instance, maxPlayers);
-
-					MelonLogger.Msg($"[TooManyPlayers] Raised C_MaxPlayerCount from {original} to {maxPlayers}.");
-				}
-				catch (System.Exception ex)
-				{
-					MelonLogger.Error($"[TooManyPlayers] Failed to raise C_MaxPlayerCount: {ex.Message}");
-				}
+				_currentConsts = __instance;
+				Apply(__instance);
 			}
 		}
 	}
