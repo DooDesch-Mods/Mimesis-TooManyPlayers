@@ -1,4 +1,5 @@
 using System;
+using DooDesch;
 using MelonLoader;
 
 namespace TooManyPlayers.Config
@@ -9,6 +10,8 @@ namespace TooManyPlayers.Config
 
 		private static MelonPreferences_Category _category;
 		private static MelonPreferences_Entry<int> _maxPlayers;
+		private static HostSetting<int> _effectiveMaxPlayers;
+		internal static event Action EffectiveValuesChanged;
 
 		internal static void Initialize()
 		{
@@ -32,6 +35,10 @@ namespace TooManyPlayers.Config
 				MelonLogger.Warning($"MaxPlayers value {_maxPlayers.Value} exceeds Steam's maximum of 250. Clamping to 250.");
 				_maxPlayers.Value = 250;
 			}
+
+			var hostSettings = new HostSettings(CategoryId);
+			_effectiveMaxPlayers = hostSettings.Register(_maxPlayers, 4, value => value >= 4 && value <= 250);
+			hostSettings.EffectiveValuesChanged += () => EffectiveValuesChanged?.Invoke();
 		}
 
 		private static MelonPreferences_Entry<T> CreateEntry<T>(string identifier, T defaultValue, string displayName, string description = null)
@@ -44,7 +51,6 @@ namespace TooManyPlayers.Config
 			return _category.CreateEntry(identifier, defaultValue, displayName, description);
 		}
 
-		internal static int MaxPlayers => _maxPlayers.Value;
+		internal static int MaxPlayers => _effectiveMaxPlayers?.Value ?? _maxPlayers?.Value ?? 8;
 	}
 }
-

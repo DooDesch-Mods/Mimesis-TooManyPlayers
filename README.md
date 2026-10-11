@@ -5,7 +5,7 @@
 
 > Raise the hard 4-player session cap so you can host and play Mimesis with larger groups - you pick the maximum, the mod enforces it everywhere.
 
-![Version](https://img.shields.io/badge/version-1.1.2-blue)
+![Version](https://img.shields.io/badge/version-1.1.3-blue)
 ![Game](https://img.shields.io/badge/game-MIMESIS-purple)
 ![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.3+-green)
 ![Status](https://img.shields.io/badge/status-working-brightgreen)
@@ -18,7 +18,7 @@ Mimesis ships with a hard limit of 4 players per session. TooManyPlayers rewrite
 - One central override does the heavy lifting: a postfix on the `DataConsts` constructor rewrites `Bifrost.ConstEnum.DataConsts.C_MaxPlayerCount`, the single data-driven field every in-game limit check reads (waiting/maintenance rooms, `IVroom.CanEnterChannel`, `GameSessionInfo.AddPlayerSteamID`). Lifting that one field raises the cap everywhere at once.
 - Network layer: prefixes on `FishySteamworks.Server.ServerSocket` `GetMaximumClients` / `SetMaximumClients` force the transport's client limit to your value (up to 250), and a constructor postfix re-applies it whenever a socket is created.
 - Steam lobby capacity: a transpiler on `SteamInviteDispatcher.CreateLobby` replaces the hardcoded lobby member cap of 4 with your configured maximum.
-- Diagnostics: logs the old and new `C_MaxPlayerCount` values on startup, and warns if a player fails to be added to a session.
+- Diagnostics: logs Steam lobby requests, creation result codes, the 30-second timeout, player-cap changes and failed session additions in `MelonLoader/Latest.log`.
 - Your configured value is validated and clamped to the 4-250 range on load, with a warning logged if you set it out of bounds.
 
 ## Requirements
@@ -37,6 +37,8 @@ Mimesis ships with a hard limit of 4 players per session. TooManyPlayers rewrite
 
 Stored in `UserData/MelonPreferences.cfg` under the `[TooManyPlayers]` category.
 
+The host's `MaxPlayers` applies automatically to joining clients with this mod. Settings are fixed for the lobby; changes apply to the next lobby. Your local config is kept. A host without TooManyPlayers uses the vanilla limit of 4.
+
 | Option | Description | Default | Values/Range |
 |---|---|---|---|
 | `MaxPlayers` | Maximum number of players allowed in a session (display name "Maximum Players"). Values below 4 or above 250 are clamped on load, with a warning logged. | `8` | `4` - `250` (clamped) |
@@ -49,7 +51,7 @@ There are no keybinds and no in-game UI beyond the standard MelonPreferences con
 2. Set `MaxPlayers` under the `[TooManyPlayers]` category to your desired cap.
 3. Relaunch the game.
 
-Host-side requirement: the cap is enforced by the host/server, so the player hosting the lobby or session must have the mod installed and configured for the larger group to take effect. Joining players do not strictly need it for the cap to apply, but matching configs avoid surprises.
+Host-side requirement: the cap is enforced by the host/server, so the player hosting the lobby or session must have the mod installed and configured for the larger group to take effect. Joining players with the mod automatically use the host's cap.
 
 ## Compatibility
 
