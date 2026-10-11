@@ -18,7 +18,7 @@ Mimesis ships with a hard limit of 4 players per session. TooManyPlayers rewrite
 - One central override raises the cap everywhere at once by rewriting the single data-driven field every in-game limit check reads (waiting/maintenance rooms, room entry, session tracking).
 - Forces the network transport's client limit to your value (up to 250) and re-applies it whenever a socket is created.
 - Raises the Steam lobby member cap from 4 to your configured maximum.
-- Logs the old and new cap values on startup and warns if a player fails to be added to a session.
+- Logs Steam lobby requests, creation result codes, the 30-second timeout, player-cap changes and failed session additions in `MelonLoader/Latest.log`.
 - Your configured value is validated and clamped to the 4-250 range on load.
 
 ## Requirements
