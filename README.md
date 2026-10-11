@@ -3,21 +3,24 @@
 > 🛟 **Need help or found a bug?** Get support at [support.doodesch.de/toomanyplayers](https://support.doodesch.de/toomanyplayers).
 
 
-> Raise the hard 4-player session cap so you can host and play Mimesis with larger groups - you pick the maximum, the mod enforces it everywhere.
+> Raise the hard 4-player session cap so you can host and play Mimesis with larger groups - you pick the maximum, the host enforces it.
 
-![Version](https://img.shields.io/badge/version-1.1.3-blue)
+![Version](https://img.shields.io/badge/version-1.1.4-blue)
 ![Game](https://img.shields.io/badge/game-MIMESIS-purple)
 ![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.3+-green)
 ![Status](https://img.shields.io/badge/status-working-brightgreen)
 
-Mimesis ships with a hard limit of 4 players per session. TooManyPlayers rewrites every player-count check in the game - the network socket, room entry, session tracking, and the Steam lobby - to honor a maximum you configure, so you can run bigger lobbies.
+Mimesis ships with a hard limit of 4 players per session. TooManyPlayers raises the network, room, session and Steam lobby limits to the host's configured maximum.
 
 ## Features
 
 - Raises the player cap from the default 4 to your configured value from 4 to 250 (`MaxPlayers`, default 8).
-- One central override does the heavy lifting: a postfix on the `DataConsts` constructor rewrites `Bifrost.ConstEnum.DataConsts.C_MaxPlayerCount`, the single data-driven field every in-game limit check reads (waiting/maintenance rooms, `IVroom.CanEnterChannel`, `GameSessionInfo.AddPlayerSteamID`). Lifting that one field raises the cap everywhere at once.
+- A postfix on the `DataConsts` constructor sets the room and session admission limit (`IVroom.CanEnterChannel`, `GameSessionInfo.AddPlayerSteamID`). The player container also supports up to 250 entries; room entry still enforces the host's configured limit.
 - Network layer: prefixes on `FishySteamworks.Server.ServerSocket` `GetMaximumClients` / `SetMaximumClients` force the transport's client limit to your value (up to 250), and a constructor postfix re-applies it whenever a socket is created.
 - Steam lobby capacity: a transpiler on `SteamInviteDispatcher.CreateLobby` replaces the hardcoded lobby member cap of 4 with your configured maximum.
+- Public room search uses each host's Steam lobby capacity instead of hiding every room with four players. Joining through the public list requires the mod on the searching client.
+- Public room cards show the host's actual Steam capacity.
+- The survival result screen keeps its four existing rows and correctly reads scrap results after larger player lists. Extra menu/result rows are not added.
 - Diagnostics: logs Steam lobby requests, creation result codes, the 30-second timeout, player-cap changes and failed session additions in `MelonLoader/Latest.log`.
 - Your configured value is validated and clamped to the 4-250 range on load, with a warning logged if you set it out of bounds.
 
@@ -71,9 +74,13 @@ Patch overview (all under `Patches/`):
 
 | File | Target | Role |
 |---|---|---|
-| `DataConstsPatches.cs` | `DataConsts` constructor | Central override of `C_MaxPlayerCount` - raises the cap everywhere |
+| `DataConstsPatches.cs` | `DataConsts` constructor | Effective host cap for room and session admission |
 | `ServerSocketPatches.cs` | `ServerSocket` `GetMaximumClients` / `SetMaximumClients` / ctor | Forces the network client limit to your value (up to 250) |
 | `SteamInviteDispatcherPatches.cs` | `SteamInviteDispatcher.CreateLobby` | Transpiler replacing the hardcoded lobby cap of 4 |
+| `PlayerContainerPatches.cs` | `IVroom` constructor | Capacity for up to 250 player actors |
+| `SurvivalResultPatches.cs` | `UIPrefab_SurvivalResult.PatchParameter` | Keep the fixed four-row UI bound |
+| `PublicRoomListPatches.cs` | `UIPrefab_PublicRoomList.SetRoomList` | Filter using each listed host's Steam capacity |
+| `RoomCardPatches.cs` | `UiPrefab_RoomCard.SetRoomData` | Show the listed host's Steam capacity |
 | `GameSessionInfoPatches.cs` | `GameSessionInfo.AddPlayerSteamID` | Diagnostic postfix only (warns on failed adds) |
 
 ## Credits / License

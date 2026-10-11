@@ -3,21 +3,23 @@
 > 🛟 **Need help or found a bug?** Get support at [support.doodesch.de/toomanyplayers](https://support.doodesch.de/toomanyplayers).
 
 
-> Raise the hard 4-player session cap so you can host and play Mimesis with larger groups - you pick the maximum, the mod enforces it everywhere.
+> Raise the hard 4-player session cap so you can host and play Mimesis with larger groups - you pick the maximum, the host enforces it.
 
-![Version](https://img.shields.io/badge/version-1.1.3-blue)
+![Version](https://img.shields.io/badge/version-1.1.4-blue)
 ![Game](https://img.shields.io/badge/game-MIMESIS-purple)
 ![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.3+-green)
 ![Status](https://img.shields.io/badge/status-working-brightgreen)
 
-Mimesis ships with a hard limit of 4 players per session. TooManyPlayers rewrites every player-count check in the game - the network socket, room entry, session tracking, and the Steam lobby - to honor a maximum you configure, so you can run bigger lobbies.
+Mimesis ships with a hard limit of 4 players per session. TooManyPlayers raises the network, room, session and Steam lobby limits to the host's configured maximum.
 
 ## Features
 
 - Raises the player cap from the default 4 to your configured value from 4 to 250 (`MaxPlayers`, default 8).
-- One central override raises the cap everywhere at once by rewriting the single data-driven field every in-game limit check reads (waiting/maintenance rooms, room entry, session tracking).
+- Sets the room and session admission limit and supports more than ten player actors.
 - Forces the network transport's client limit to your value (up to 250) and re-applies it whenever a socket is created.
 - Raises the Steam lobby member cap from 4 to your configured maximum.
+- Public room search uses each host's Steam capacity and shows it on the room card. The searching client needs this mod.
+- Keeps the four existing survival result rows and reads scrap results correctly after larger player lists.
 - Logs Steam lobby requests, creation result codes, the 30-second timeout, player-cap changes and failed session additions in `MelonLoader/Latest.log`.
 - Your configured value is validated and clamped to the 4-250 range on load.
 
