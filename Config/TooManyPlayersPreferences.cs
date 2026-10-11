@@ -19,7 +19,7 @@ namespace TooManyPlayers.Config
 
 			_category = MelonPreferences.CreateCategory(CategoryId, "TooManyPlayers");
 			_maxPlayers = CreateEntry("MaxPlayers", 8, "Maximum Players", 
-				"The maximum number of players allowed in a session. Default: 8. Minimum: 4, Maximum: 32766.");
+				"The maximum number of players allowed in a session. Default: 8. Minimum: 4, Maximum: 250.");
 			
 			// Validate and clamp the value
 			if (_maxPlayers.Value < 4)
@@ -27,10 +27,10 @@ namespace TooManyPlayers.Config
 				MelonLogger.Warning($"MaxPlayers value {_maxPlayers.Value} is below minimum of 4. Clamping to 4.");
 				_maxPlayers.Value = 4;
 			}
-			else if (_maxPlayers.Value > 32766)
+			else if (_maxPlayers.Value > 250)
 			{
-				MelonLogger.Warning($"MaxPlayers value {_maxPlayers.Value} exceeds maximum of 32766. Clamping to 32766.");
-				_maxPlayers.Value = 32766;
+				MelonLogger.Warning($"MaxPlayers value {_maxPlayers.Value} exceeds Steam's maximum of 250. Clamping to 250.");
+				_maxPlayers.Value = 250;
 			}
 		}
 

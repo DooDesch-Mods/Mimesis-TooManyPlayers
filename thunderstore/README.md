@@ -5,7 +5,7 @@
 
 > Raise the hard 4-player session cap so you can host and play Mimesis with larger groups - you pick the maximum, the mod enforces it everywhere.
 
-![Version](https://img.shields.io/badge/version-1.1.1-blue)
+![Version](https://img.shields.io/badge/version-1.1.2-blue)
 ![Game](https://img.shields.io/badge/game-MIMESIS-purple)
 ![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.3+-green)
 ![Status](https://img.shields.io/badge/status-working-brightgreen)
@@ -14,12 +14,12 @@ Mimesis ships with a hard limit of 4 players per session. TooManyPlayers rewrite
 
 ## Features
 
-- Raises the player cap from the default 4 to any value you configure (`MaxPlayers`, default 8).
+- Raises the player cap from the default 4 to your configured value from 4 to 250 (`MaxPlayers`, default 8).
 - One central override raises the cap everywhere at once by rewriting the single data-driven field every in-game limit check reads (waiting/maintenance rooms, room entry, session tracking).
-- Forces the network transport's client limit to your value (clamped to 32766) and re-applies it whenever a socket is created.
-- Raises the Steam lobby member cap from 4 to your configured maximum. (Steam still enforces its own ~250 hard limit at runtime.)
+- Forces the network transport's client limit to your value (up to 250) and re-applies it whenever a socket is created.
+- Raises the Steam lobby member cap from 4 to your configured maximum.
 - Logs the old and new cap values on startup and warns if a player fails to be added to a session.
-- Your configured value is validated and clamped to the 4-32766 range on load.
+- Your configured value is validated and clamped to the 4-250 range on load.
 
 ## Requirements
 
@@ -39,7 +39,7 @@ Stored in `UserData/MelonPreferences.cfg` under the `[TooManyPlayers]` category.
 
 | Option | Description | Default | Values/Range |
 |---|---|---|---|
-| `MaxPlayers` | Maximum number of players allowed in a session (display name "Maximum Players"). Values below 4 or above 32766 are clamped on load. | `8` | `4` - `32766` (clamped) |
+| `MaxPlayers` | Maximum number of players allowed in a session (display name "Maximum Players"). Values below 4 or above 250 are clamped on load. | `8` | `4` - `250` (clamped) |
 
 ## Usage
 
