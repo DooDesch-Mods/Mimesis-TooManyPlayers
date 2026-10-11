@@ -5,7 +5,7 @@
 
 > Raise the hard 4-player session cap so you can host and play Mimesis with larger groups - you pick the maximum, the mod enforces it everywhere.
 
-![Version](https://img.shields.io/badge/version-1.1.0-blue)
+![Version](https://img.shields.io/badge/version-1.1.1-blue)
 ![Game](https://img.shields.io/badge/game-MIMESIS-purple)
 ![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.3+-green)
 ![Status](https://img.shields.io/badge/status-working-brightgreen)
@@ -25,13 +25,13 @@ Mimesis ships with a hard limit of 4 players per session. TooManyPlayers rewrite
 
 | Component | Version |
 |---|---|
-| MIMESIS | 0.3.0 (current Steam build) |
+| MIMESIS | 0.3.2 |
 | MelonLoader | 0.7.3+ |
 
 ## Installation
 
 - Recommended: install via a Thunderstore mod manager (r2modman / Gale) and let it resolve dependencies. Package: `DooDesch/TooManyPlayers`.
-- Manual: download `TooManyPlayers.dll` from the [releases page](../../releases) and drop it into `MIMESIS/Mods/`. Launch the game once to generate the config file at `UserData/MelonPreferences.cfg`.
+- Manual: download `TooManyPlayers.dll` from the [releases page](https://github.com/DooDesch-Mods/Mimesis-TooManyPlayers/releases) and drop it into `MIMESIS/Mods/`. Launch the game once to generate the config file at `UserData/MelonPreferences.cfg`.
 
 ## Configuration
 
@@ -53,7 +53,7 @@ Host-side requirement: the cap is enforced by the host/server, so the player hos
 
 ## Compatibility
 
-Built for Mimesis 0.3.0 / MelonLoader 0.7.3. Because the limit is enforced server-side, the host carries the configured cap for the whole lobby.
+Built for Mimesis 0.3.2 / MelonLoader 0.7.3. Because the limit is enforced server-side, the host carries the configured cap for the whole lobby.
 
 ## Building (developers)
 
@@ -63,7 +63,7 @@ Standalone mod, no MimicAPI dependency.
 dotnet build -c Release
 ```
 
-Targets `netstandard2.1` and references the game DLLs in `Workspace/lib/game` plus MelonLoader/Harmony in `Workspace/lib/melonloader`. The post-build step copies `TooManyPlayers.dll` into your local `MIMESIS/Mods` folder.
+Targets `netstandard2.1` and references the game DLLs in `Workspace/lib/game` plus MelonLoader/Harmony in `Workspace/lib/melonloader`. The shared deploy configuration defaults to `_Test/MIMESIS/Mods`.
 
 Patch overview (all under `Patches/`):
 
@@ -76,8 +76,8 @@ Patch overview (all under `Patches/`):
 
 ## Credits / License
 
-Author: DooDesch. Provided as-is under the MIT License. Contributions are welcome via pull requests at [Mimesis-TooManyPlayers](https://github.com/DooDesch/Mimesis-TooManyPlayers).
+Author: DooDesch. Provided as-is under the MIT License. Contributions are welcome via pull requests at [Mimesis-TooManyPlayers](https://github.com/DooDesch-Mods/Mimesis-TooManyPlayers).
 
 ## AI disclosure
 
-The mod icon is AI-generated. Code and configuration are hand-written.
+The mod icon is AI-generated.
