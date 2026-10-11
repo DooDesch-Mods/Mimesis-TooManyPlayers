@@ -5,7 +5,7 @@
 
 > Raise the hard 4-player session cap so you can host and play Mimesis with larger groups - you pick the maximum, the mod enforces it everywhere.
 
-![Version](https://img.shields.io/badge/version-1.1.0-blue)
+![Version](https://img.shields.io/badge/version-1.1.1-blue)
 ![Game](https://img.shields.io/badge/game-MIMESIS-purple)
 ![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.3+-green)
 ![Status](https://img.shields.io/badge/status-working-brightgreen)
@@ -25,13 +25,13 @@ Mimesis ships with a hard limit of 4 players per session. TooManyPlayers rewrite
 
 | Component | Version |
 |---|---|
-| MIMESIS | 0.3.0 (current Steam build) |
+| MIMESIS | 0.3.2 |
 | MelonLoader | 0.7.3+ |
 
 ## Installation
 
 - Recommended: install via a Thunderstore mod manager (r2modman / Gale) and let it resolve dependencies.
-- Manual: download `TooManyPlayers.dll` from [GitHub Releases](https://github.com/DooDesch/Mimesis-TooManyPlayers/releases), drop it into `MIMESIS/Mods/`, then launch the game once to generate the config file at `UserData/MelonPreferences.cfg`.
+- Manual: download `TooManyPlayers.dll` from [GitHub Releases](https://github.com/DooDesch-Mods/Mimesis-TooManyPlayers/releases), drop it into `MIMESIS/Mods/`, then launch the game once to generate the config file at `UserData/MelonPreferences.cfg`.
 
 ## Configuration
 
@@ -53,12 +53,12 @@ Host-side requirement: the cap is enforced by the host/server, so the player hos
 
 ## Compatibility
 
-Built for Mimesis 0.3.0 / MelonLoader 0.7.3.
+Built for Mimesis 0.3.2 / MelonLoader 0.7.3.
 
 ## Links
 
-Source and releases: [github.com/DooDesch/Mimesis-TooManyPlayers](https://github.com/DooDesch/Mimesis-TooManyPlayers)
+Source and releases: [github.com/DooDesch-Mods/Mimesis-TooManyPlayers](https://github.com/DooDesch-Mods/Mimesis-TooManyPlayers)
 
 ## AI disclosure
 
-The mod icon is AI-generated. Code and configuration are hand-written.
+The mod icon is AI-generated.

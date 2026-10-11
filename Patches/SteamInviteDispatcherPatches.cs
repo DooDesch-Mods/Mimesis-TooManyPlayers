@@ -1,46 +1,37 @@
 using HarmonyLib;
-using MelonLoader;
 using TooManyPlayers.Config;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Reflection.Emit;
 
 namespace TooManyPlayers.Patches
 {
 	internal static class SteamInviteDispatcherPatches
 	{
-		// SteamInviteDispatcher.CreateLobby still hardcodes the Steam lobby member cap:
-		//   SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypePublic, 4);   (decompiled/SteamInviteDispatcher.cs:793)
-		// That literal 4 is the only Ldc_I4_4 in the method. We transpile just that
-		// literal so the rest of the method - the CreateLobby timeout coroutine and the
-		// isRetryAttempt handling added in 0.3.0 - runs unchanged.
-		// Note: Steam itself caps lobby members at ~250, so very large values are
-		// clamped/rejected by Steam at runtime regardless.
+		// Read the configured cap when a lobby is created. Harmony registers this patch
+		// before OnInitializeMelon initializes the preferences.
 		[HarmonyPatch(typeof(SteamInviteDispatcher), "CreateLobby")]
 		internal static class CreateLobbyPatch
 		{
-			private static System.Collections.Generic.IEnumerable<CodeInstruction> Transpiler(
-				System.Collections.Generic.IEnumerable<CodeInstruction> instructions)
+			private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
 			{
-				var codes = new System.Collections.Generic.List<CodeInstruction>(instructions);
-
-				int maxPlayers = 8;
-				try
-				{
-					maxPlayers = TooManyPlayersPreferences.MaxPlayers;
-				}
-				catch (System.NullReferenceException ex)
-				{
-					// A transpiler can run before the preferences exist. The lobby then keeps the
-					// vanilla size, and that has to be visible - it looks exactly like a mod that
-					// never ran.
-					MelonLogger.Warning($"[TooManyPlayers] Preferences not ready, the lobby keeps {maxPlayers} seats: {ex.Message}");
-				}
+				var codes = new List<CodeInstruction>(instructions);
+				var maxPlayersGetter = typeof(TooManyPlayersPreferences)
+					.GetProperty(nameof(TooManyPlayersPreferences.MaxPlayers), BindingFlags.Static | BindingFlags.NonPublic)
+					.GetGetMethod(nonPublic: true);
 
 				bool patched = false;
-				for (int i = 0; i < codes.Count; i++)
+				for (int i = 0; i + 1 < codes.Count; i++)
 				{
-					if (codes[i].opcode == OpCodes.Ldc_I4_4)
+					if (codes[i].opcode == OpCodes.Ldc_I4_4 &&
+						codes[i + 1].opcode == OpCodes.Call &&
+						codes[i + 1].operand is MethodInfo method &&
+						method.DeclaringType?.FullName == "Steamworks.SteamMatchmaking" &&
+						method.Name == "CreateLobby")
 					{
-						codes[i] = new CodeInstruction(OpCodes.Ldc_I4, maxPlayers);
+						codes[i].opcode = OpCodes.Call;
+						codes[i].operand = maxPlayersGetter;
 						patched = true;
 						break;
 					}
@@ -48,7 +39,7 @@ namespace TooManyPlayers.Patches
 
 				if (!patched)
 				{
-					MelonLogger.Error("[TooManyPlayers] Failed to apply SteamInviteDispatcher.CreateLobby patch (lobby cap literal not found)!");
+					throw new InvalidOperationException("[TooManyPlayers] SteamInviteDispatcher.CreateLobby cap argument was not found.");
 				}
 
 				return codes;
