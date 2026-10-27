@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.5] - 2026-10-27
+
+### Fixed
+
+- Apply each host's real capacity to the public tram list as well as the public room browser, so groups above four players remain visible while places are free.
+- Remove the obsolete survival-result patch. MIMESIS 0.4.0 already limits the screen to its available rows and keeps the full player count for scrap results.
+
 ## [1.1.4] - 2026-10-12
 
 - Remove the separate ten-player actor-container limit.

@@ -12,9 +12,12 @@ namespace TooManyPlayers.Patches
     internal static class PublicRoomListPatches
     {
         private static bool _warnedMissingLimit;
-        private static MethodBase TargetMethod() =>
-            AccessTools.Method(AccessTools.TypeByName("UIPrefab_PublicRoomList"), "SetRoomList") ??
-            throw new MissingMethodException("UIPrefab_PublicRoomList.SetRoomList");
+        private static IEnumerable<MethodBase> TargetMethods()
+        {
+            foreach (string type in new[] { "UIPrefab_PublicRoomList", "UIPrefab_StartTram" })
+                yield return AccessTools.Method(AccessTools.TypeByName(type), "SetRoomList") ??
+                    throw new MissingMethodException(type + ".SetRoomList");
+        }
 
         internal static int GetLobbyLimit(CSteamID lobby)
         {

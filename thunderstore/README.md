@@ -5,7 +5,7 @@
 
 > Raise the hard 4-player session cap so you can host and play Mimesis with larger groups - you pick the maximum, the host enforces it.
 
-![Version](https://img.shields.io/badge/version-1.1.4-blue)
+![Version](https://img.shields.io/badge/version-1.1.5-blue)
 ![Game](https://img.shields.io/badge/game-MIMESIS-purple)
 ![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.3+-green)
 ![Status](https://img.shields.io/badge/status-working-brightgreen)
@@ -27,7 +27,7 @@ Mimesis ships with a hard limit of 4 players per session. TooManyPlayers raises 
 
 | Component | Version |
 |---|---|
-| MIMESIS | 0.3.2 |
+| MIMESIS | 0.4.0 |
 | MelonLoader | 0.7.3+ |
 
 ## Installation
@@ -57,7 +57,7 @@ Host-side requirement: the cap is enforced by the host/server, so the player hos
 
 ## Compatibility
 
-Built for Mimesis 0.3.2 / MelonLoader 0.7.3.
+Built for Mimesis 0.4.0 / MelonLoader 0.7.3.
 
 ## Links
 
