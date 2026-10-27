@@ -5,10 +5,12 @@
 
 > Raise the hard 4-player session cap so you can host and play Mimesis with larger groups - you pick the maximum, the host enforces it.
 
-![Version](https://img.shields.io/badge/version-1.1.5-blue)
+![Version](https://img.shields.io/badge/version-1.1.6-blue)
 ![Game](https://img.shields.io/badge/game-MIMESIS-purple)
 ![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.3+-green)
 ![Status](https://img.shields.io/badge/status-working-brightgreen)
+
+![TooManyPlayers in MIMESIS](https://raw.githubusercontent.com/DooDesch-Mods/Mimesis-TooManyPlayers/main/docs/img/header.jpg)
 
 Mimesis ships with a hard limit of 4 players per session. TooManyPlayers raises the network, room, session and Steam lobby limits to the host's configured maximum.
 
@@ -22,6 +24,16 @@ Mimesis ships with a hard limit of 4 players per session. TooManyPlayers raises 
 - Keeps the four existing survival result rows and reads scrap results correctly after larger player lists.
 - Logs Steam lobby requests, creation result codes, the 30-second timeout, player-cap changes and failed session additions in `MelonLoader/Latest.log`.
 - Your configured value is validated and clamped to the 4-250 range on load.
+
+## Screenshots
+
+![Seven simulated clients stand together in a larger MIMESIS host session](https://raw.githubusercontent.com/DooDesch-Mods/Mimesis-TooManyPlayers/main/docs/img/larger-crew.jpg)
+
+Seven simulated clients in one host session, photographed using FakePlayers.
+
+![A close-up of the native avatars from the larger simulated session](https://raw.githubusercontent.com/DooDesch-Mods/Mimesis-TooManyPlayers/main/docs/img/crew-closeup.jpg)
+
+The same in-game crew up close.
 
 ## Requirements
 
@@ -63,6 +75,6 @@ Built for Mimesis 0.4.0 / MelonLoader 0.7.3.
 
 Source and releases: [github.com/DooDesch-Mods/Mimesis-TooManyPlayers](https://github.com/DooDesch-Mods/Mimesis-TooManyPlayers)
 
-## AI disclosure
+## Images
 
-The mod icon is AI-generated.
+Screenshots and the package icon are captured in MIMESIS.
