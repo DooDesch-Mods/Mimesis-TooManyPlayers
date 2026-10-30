@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0] - 2026-10-30
+
+### Changed
+
+- Add a host-controlled master switch without changing the saved player cap.
+- Keep activation and capacity fixed for the lobby; publish the vanilla cap of four when disabled, including for legacy clients.
+
 ## [1.1.6] - 2026-10-28
 
 ### Changed
