@@ -5,7 +5,7 @@
 
 > Raise the hard 4-player session cap so you can host and play Mimesis with larger groups - you pick the maximum, the host enforces it.
 
-![Version](https://img.shields.io/badge/version-1.1.6-blue)
+![Version](https://img.shields.io/badge/version-1.2.0-blue)
 ![Game](https://img.shields.io/badge/game-MIMESIS-purple)
 ![MelonLoader](https://img.shields.io/badge/MelonLoader-0.7.3+-green)
 ![Status](https://img.shields.io/badge/status-working-brightgreen)
@@ -50,13 +50,16 @@ The same in-game crew up close.
 
 ## Configuration
 
-Stored in `UserData/MelonPreferences.cfg` under the `[TooManyPlayers]` category.
+Stored in `UserData/MelonPreferences.cfg` under `[TooManyPlayers]`.
 
-The host's `MaxPlayers` applies automatically to joining clients with this mod. Settings are fixed for the lobby; changes apply to the next lobby. Your local config is kept. A host without TooManyPlayers uses the vanilla limit of 4.
+Gameplay settings follow the lobby host without overwriting saved client preferences. Without the mod on the host, clients use vanilla behavior. Live settings apply after the host changes them through a MelonPreferences UI or reloads the preferences; editing the file alone does not reload it. Use the same current mod version on host and clients for the new options and live updates. Older versions retain their initial legacy snapshot. Invalid new values use the registered default with a warning.
 
-| Option | Description | Default | Values/Range |
-|---|---|---|---|
-| `MaxPlayers` | Maximum number of players allowed in a session (display name "Maximum Players"). Values below 4 or above 250 are clamped on load, with a warning logged. | `8` | `4` - `250` (clamped) |
+The host controls both settings. Activation and network capacity are structural, so changes apply to the next lobby. Disabling the mod keeps the configured cap saved and publishes the vanilla cap of four, including for older clients.
+
+| Option | Default | Range and effect |
+|---|---|---|
+| `Enabled` | `true` | Master switch, next lobby. False uses the vanilla cap of 4. |
+| `MaxPlayers` | `8` | Capacity, clamped to 4-250 on load, next lobby. |
 
 ## Usage
 

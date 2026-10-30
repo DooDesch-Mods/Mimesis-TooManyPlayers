@@ -11,6 +11,9 @@ namespace TooManyPlayers.Config
 		private static MelonPreferences_Category _category;
 		private static MelonPreferences_Entry<int> _maxPlayers;
 		private static HostSetting<int> _effectiveMaxPlayers;
+		private static MelonPreferences_Entry<bool> _enabled;
+		private static HostSetting<bool> _effectiveEnabled;
+		private static HostSettings _hostSettings;
 		internal static event Action EffectiveValuesChanged;
 
 		internal static void Initialize()
@@ -21,6 +24,7 @@ namespace TooManyPlayers.Config
 			}
 
 			_category = MelonPreferences.CreateCategory(CategoryId, "TooManyPlayers");
+			_enabled = CreateEntry("Enabled", true, "Enabled", "Host setting, next lobby. Enable the larger player cap. Disabled uses the vanilla cap of four without changing MaxPlayers.");
 			_maxPlayers = CreateEntry("MaxPlayers", 8, "Maximum Players", 
 				"The maximum number of players allowed in a session. Default: 8. Minimum: 4, Maximum: 250.");
 			
@@ -36,9 +40,10 @@ namespace TooManyPlayers.Config
 				_maxPlayers.Value = 250;
 			}
 
-			var hostSettings = new HostSettings(CategoryId);
-			_effectiveMaxPlayers = hostSettings.Register(_maxPlayers, 4, value => value >= 4 && value <= 250);
-			hostSettings.EffectiveValuesChanged += () => EffectiveValuesChanged?.Invoke();
+			_hostSettings = new HostSettings(CategoryId);
+			_effectiveEnabled = _hostSettings.Register(_enabled, false, legacy: false);
+			_effectiveMaxPlayers = _hostSettings.Register(_maxPlayers, 4, value => value >= 4 && value <= 250, localValue: () => _enabled.Value ? _maxPlayers.Value : 4);
+			_hostSettings.EffectiveValuesChanged += () => EffectiveValuesChanged?.Invoke();
 		}
 
 		private static MelonPreferences_Entry<T> CreateEntry<T>(string identifier, T defaultValue, string displayName, string description = null)
@@ -51,6 +56,7 @@ namespace TooManyPlayers.Config
 			return _category.CreateEntry(identifier, defaultValue, displayName, description);
 		}
 
-		internal static int MaxPlayers => _effectiveMaxPlayers?.Value ?? _maxPlayers?.Value ?? 8;
+		internal static bool Enabled => _hostSettings?.UsingLegacyHost == true || (_effectiveEnabled?.Value ?? _enabled?.Value ?? true);
+		internal static int MaxPlayers => Enabled ? (_effectiveMaxPlayers?.Value ?? _maxPlayers?.Value ?? 8) : 4;
 	}
 }
