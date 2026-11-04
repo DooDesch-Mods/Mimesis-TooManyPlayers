@@ -2,6 +2,8 @@
 
 > 🛟 **Need help or found a bug?** Get support at [support.doodesch.de/toomanyplayers](https://support.doodesch.de/toomanyplayers).
 
+[![Discord](https://mods.doodesch.de/img/badge.svg)](https://mods.doodesch.de)
+
 
 > Raise the hard 4-player session cap so you can host and play Mimesis with larger groups - you pick the maximum, the host enforces it.
 
@@ -97,6 +99,12 @@ Patch overview (all under `Patches/`):
 | `PublicRoomListPatches.cs` | `UIPrefab_PublicRoomList.SetRoomList` | Filter using each listed host's Steam capacity |
 | `RoomCardPatches.cs` | `UiPrefab_RoomCard.SetRoomData` | Show the listed host's Steam capacity |
 | `GameSessionInfoPatches.cs` | `GameSessionInfo.AddPlayerSteamID` | Diagnostic postfix only (warns on failed adds) |
+
+## Community
+
+[![DooDesch Mods on Discord](https://mods.doodesch.de/img/card.svg)](https://mods.doodesch.de)
+
+Join the DooDesch Mods Discord: update pings, polls on what comes next, and playtests of new mods.
 
 ## Credits / License
 
